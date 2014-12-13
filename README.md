@@ -11,7 +11,7 @@ Requirements
 Instructions
 ------------
 
-Enter your Coinbase API key + secret and Bitreserve USD card bitcoin address in `cbinit.php`
+Enter your Coinbase API key + secret and Bitreserve USD card bitcoin address in `user.php`
 
 How it Works
 ------------

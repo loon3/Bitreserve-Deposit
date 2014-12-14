@@ -121,19 +121,12 @@
         			url: $(this).attr('action'), // the file to call
         			success: function(response) { // on success..
             			$('#statusbox').html(response + "<div style='margin-top: 50px;'><a href='https://bitreserve.org/login' class='btn btn-warning' role='button'>Login to Bitreserve</a></h4></div>"); // update the DIV
-            			$('button[type=submit]').prop('disabled', true);
-            			
+            			$( "#pagereset" ).css( "display", "block" );
             		}
     			});
 		
-  			} else {
-  				
-    			$('#statusbox').html("<div style='margin-top: 80px;'><h3>Transfer amount must be less than Max Deposit</h3></div>");
-    	
-  			}
-  			
-  			$( "#pagereset" ).css( "display", "block" );
-  			
+  		} 
+		
     	} 
     		   			
     	return false; // cancel original event to prevent form submitting
@@ -209,7 +202,7 @@
   </div>
 
   <div id="statusbox" style="margin-top: 50px;"></div>
-  <div id="pagereset" style="margin-top: 20px; margin-bottom: 100px; display: none;"><a href="/coinbase/" class="btn btn-primary" role="button">Perform another transfer</a></div>
+  <div id="pagereset" style="margin-top: 20px; margin-bottom: 100px; display: none;"><a href="." class="btn btn-primary" role="button">Perform another transfer</a></div>
 
 </div>
 

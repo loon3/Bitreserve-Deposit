@@ -1,0 +1,218 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=0.8, minimum-scale=0.8, maximum-scale=0.8, minimal-ui" />
+<title>
+	BitDeposit
+</title>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script>
+
+	$(document).ready(function () {
+
+    var tid = setInterval(pcttimer, 5000);
+  
+  	function pcttimer() {
+	
+ 			$.getJSON( "pct.php", function( data ) {
+ 				
+  				var cbusd = parseFloat(data.buy);
+  				$( "#cbusd" ).html( cbusd );
+  				
+  				var brusd = parseFloat(data.sell);
+  				$( "#brusd" ).html( brusd );
+  				
+  				var amount = $( "#amountbox" ).val();
+  				var amount = parseFloat(amount);
+  								
+          var cbbtc = amount / parseFloat(cbusd);
+  				
+       		if (isNaN(amount) == false && $("#amountbox").filter(function() { return $(this).val(); }).length > 0){
+  				
+  					var fee = (amount - (cbbtc*brusd))+0.15;  
+  					
+  					$( "#fee" ).html( fee.toFixed(2));
+  					
+  					var estpct = ((amount / (amount-fee))-1)*100;
+  					$( "#estpct" ).html( estpct.toFixed(2));
+       		
+       		} else {
+       				
+       			$( "#fee" ).html( "---");
+       			$( "#estpct" ).html("");
+       		
+       		}
+					
+					$( "#working" ).css( "display", "none" );
+					$( "#container" ).css( "display", "block" );					
+					
+			});	
+				
+		}
+		
+    pcttimer();
+		
+		$( "#fee" ).html( "---");	
+		
+    $('#amountbox').keyup(function () { 
+       		 	
+      var maxamount = $( "#max_deposit_amount" ).html();
+      var maxamount = parseFloat(maxamount);
+       		 	
+      var cbusd = $( "#cbusd" ).html();
+	
+  		var brusd = $( "#brusd" ).html();  				  				  				
+      var brusd = parseFloat(brusd);
+  		$('input[name=brusd]').val(brusd);
+  				
+  		var amount = parseFloat($( "#amountbox" ).val());
+  		var amount = parseFloat(amount);
+  				
+  		var cbbtc = amount / parseFloat(cbusd);
+  				
+      if (isNaN(amount) == false && $("#amountbox").filter(function() { return $(this).val(); }).length > 0){
+  				 			
+  			var fee = (amount - (cbbtc*brusd))+0.15;  	
+  				
+  			$( "#fee" ).html( fee.toFixed(2));
+  			var estpct = ((amount / (amount-fee))-1)*100;
+  			$( "#estpct" ).html( estpct.toFixed(2));
+  					
+      } else {
+       		
+       	$( "#fee" ).html( "---");
+       	$( "#estpct" ).html("");
+       			
+      }
+       			
+      if (amount > maxamount) {
+      	$( "#toomuch" ).html( "<span style='color: #C94949;'>Transfer amount exceed Max Deposit.</span>");
+       	$('button[type=submit]').prop('disabled', true);
+      } else {
+       	$( "#toomuch" ).html( "");
+       	$("button[type=submit]").removeAttr("disabled");
+      }
+       		
+    });
+       
+    $('#transferform').submit(function() { // catch the form's submit event
+    	
+    	var usdtotalamount = $( "#amountbox" ).val();
+    	
+    	var maxamount = $( "#max_deposit_amount" ).html();
+    	var maxamount = parseFloat(maxamount);
+    	
+    	
+    	
+    	if (isNaN(usdtotalamount) == false && $("#amountbox").filter(function() { return $(this).val(); }).length > 0){
+    	
+    		$( "#forminfo" ).css( "display", "none" );
+    		$('#statusbox').html("<div style='margin-top: 80px;'><i class='fa fa-spinner fa-spin fa-3x'></i></div>");
+
+    		if (usdtotalamount < maxamount) {	
+  			
+    			$.ajax({ // create an AJAX call...
+        			data: $(this).serialize(), // get the form data
+        			type: $(this).attr('method'), // GET or POST
+        			url: $(this).attr('action'), // the file to call
+        			success: function(response) { // on success..
+            			$('#statusbox').html(response + "<div style='margin-top: 50px;'><a href='https://bitreserve.org/login' class='btn btn-warning' role='button'>Login to Bitreserve</a></h4></div>"); // update the DIV
+            			$('button[type=submit]').prop('disabled', true);
+            			
+            		}
+    			});
+		
+  			} else {
+  				
+    			$('#statusbox').html("<div style='margin-top: 80px;'><h3>Transfer amount must be less than Max Deposit</h3></div>");
+    	
+  			}
+  			
+  			$( "#pagereset" ).css( "display", "block" );
+  			
+    	} 
+    		   			
+    	return false; // cancel original event to prevent form submitting
+    
+	  });
+
+
+
+  });
+	
+	  
+		
+	$( window ).load(function() {
+		$.getJSON( "getmax.php", function( datamax ) {
+       				
+    		var max_deposit = parseFloat(datamax.max);
+				$( "#max_deposit" ).html( "Max Deposit: $");
+				$( "#max_deposit_amount" ).html(  max_deposit.toFixed(2) );
+				
+				$("button[type=submit]").removeAttr("disabled");
+				
+		});	
+	});	
+	
+</script>
+</head>
+<style>
+	#container {
+		padding: 30px;
+		text-align: center;
+		width: 100%;
+		display: none;
+	}
+	#feebox {
+		margin-bottom: 30px;
+	}
+	#working {
+		display: block;
+		margin: 100px auto 50px auto;
+	}
+</style>	
+<body>
+<div id="working" align="center"><i class='fa fa-spinner fa-spin fa-3x'></i></div>
+<div id="container">
+	<h1 style="font-size: 48px;">BitDeposit</h1>
+	<p style="font-weight: bold;">Transfer USD from your bank account to Bitreserve bitUSD (via Coinbase)</p>
+	
+	<div id="forminfo" style="padding-top: 30px;">
+		<div id="feebox">
+		  <h3 style="display: none;">CB Buy: $<span id="cbusd"></span></h3>
+		  <h3 style="display: none;">BR Sell: $<span id="brusd"></span></h3>
+		  <h3><span id="max_deposit">Getting maximum deposit amount...</span><span id="max_deposit_amount"></span></h3>
+		  <p>You can only deposit up to the USD value of your Coinbase account</p>
+		</div>
+    <div style="width:360px; margin: auto;">
+      <form class="form" role="form" method="post" action="cbsync.php" id="transferform">
+        <div id="toomuch" style="height: 20px;"></div>
+        <div class="form-group">
+          <div class="input-group">
+            <input name="usdamt" class="form-control" id="amountbox" placeholder="Enter amount to transfer" style="text-align: center;">
+            <div class="input-group-addon">Est. Fee: $<span id="fee"></span> (<span id="estpct"></span>%)</div>
+          </div>
+        </div>
+        <p class="small" style="font-style: italic; padding-bottom: 20px;">(Withdrawal amount may vary slightly from amount requested due to fluctuations in exchange rate)</p>
+        <div class="form-group">
+          <label for="inputPassword" class="sr-only">Password</label>
+          <input type="password" class="form-control" id="inputPassword" name="pin" placeholder="Enter Password" style="text-align: center;">
+        </div>
+        <div style="padding-top: 30px;"><button id="transferbutton" type="submit" class="btn btn-primary" disabled>Transfer USD</button></div>
+        <input type="hidden" id="brusdhide" name="brusd" value="0" />
+      </form>
+    </div>
+  </div>
+
+  <div id="statusbox" style="margin-top: 50px;"></div>
+  <div id="pagereset" style="margin-top: 20px; margin-bottom: 100px; display: none;"><a href="/coinbase/" class="btn btn-primary" role="button">Perform another transfer</a></div>
+
+</div>
+
+</body>
+
+</html>

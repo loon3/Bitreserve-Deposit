@@ -24,6 +24,6 @@ How it Works
 Demo
 ----
 
-http://bitdeposit.org/coinbase/
+http://joelooney.org/bitdeposit/
 
 Demo transfer password is 1234

@@ -4,7 +4,7 @@
 $_API_KEY = "";
 $_API_SECRET = "";
 
-//Enter your Bitreseruve USD Card address
+//Enter your Bitreserve USD Card bitcoin address
 $br_usd_addr = "";
 
 //Enter your pin/password

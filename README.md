@@ -11,7 +11,7 @@ Requirements
 Instructions
 ------------
 
-Enter your Coinbase API key + secret and Bitreserve card addresses in `user.php`
+Enter your Coinbase API key + secret and Bitreserve asset card addresses in `user.php`
 
 How it Works
 ------------

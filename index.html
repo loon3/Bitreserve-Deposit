@@ -53,12 +53,34 @@
        			var cbbtc = amount / parseFloat(cbusd);
   				
        			if (isNaN(amount) == false && $("#amountbox").filter(function() { return $(this).val(); }).length > 0){
-  					var fee = (amount - (cbbtc*brusd))+0.15;  
+  				var fee = (amount - (cbbtc*brusd))+0.15; 
+  				//Bitreserve USD exchange rate includes 0.45% fee
   					
-  					$( "#fee" ).html( fee.toFixed(2));
+  				var estpct = ((amount / (amount-fee))-1)*100;
   					
-  					var estpct = ((amount / (amount-fee))-1)*100;
+  				if ($( "#assettype" ).html() == "USD"){
+        				$( "#fee" ).html( fee.toFixed(2));
+  					$( "#estpct" ).html( estpct.toFixed(2));	
+       				}
+       				
+  				if ($( "#assettype" ).html() == "CNY"){
+       				      	var fee = fee + (amount * (0.02-0.0045)); //2% fee for CNY
+       					var estpct = estpct + (2-0.45);
+       				       	$( "#fee" ).html( fee.toFixed(2));
+  					$( "#estpct" ).html( estpct.toFixed(2));	
+       				}
+       				if ($( "#assettype" ).html() == "EUR"){
+	       			       	var fee = fee + (amount * (0.0095-0.0045)); //0.95% fee for CNY
+       					var estpct = estpct + (0.95-0.45);
+       					$( "#fee" ).html( fee.toFixed(2));
   					$( "#estpct" ).html( estpct.toFixed(2));
+       				}
+       				if ($( "#assettype" ).html() == "Gold"){
+       					var fee = fee + (amount * (0.024-0.0045)); //2.4% fee for gold
+       					var estpct = estpct + (2.4-0.45);
+       					$( "#fee" ).html( fee.toFixed(2));
+  					$( "#estpct" ).html( estpct.toFixed(2));		
+       				}
        			} else {
        				$( "#fee" ).html( "---");
        					$( "#estpct" ).html("");
@@ -107,12 +129,34 @@
   				var cbbtc = amount / parseFloat(cbusd);
   				
        			if (isNaN(amount) == false && $("#amountbox").filter(function() { return $(this).val(); }).length > 0){
-  				 			
-  				var fee = (amount - (cbbtc*brusd))+0.15;  	
-  				
-  				$( "#fee" ).html( fee.toFixed(2));
-  					var estpct = ((amount / (amount-fee))-1)*100;
+  				var fee = (amount - (cbbtc*brusd))+0.15; 
+  				//Bitreserve USD exchange rate includes 0.45% fee
+  					
+  				var estpct = ((amount / (amount-fee))-1)*100;
+  					
+  				if ($( "#assettype" ).html() == "USD"){
+        				$( "#fee" ).html( fee.toFixed(2));
+  					$( "#estpct" ).html( estpct.toFixed(2));	
+       				}
+       				
+  				if ($( "#assettype" ).html() == "CNY"){
+       				      	var fee = fee + (amount * (0.02-0.0045)); //2% fee for CNY
+       					var estpct = estpct + (2-0.45);
+       				       	$( "#fee" ).html( fee.toFixed(2));
+  					$( "#estpct" ).html( estpct.toFixed(2));	
+       				}
+       				if ($( "#assettype" ).html() == "EUR"){
+	       			       	var fee = fee + (amount * (0.0095-0.0045)); //0.95% fee for CNY
+       					var estpct = estpct + (0.95-0.45);
+       					$( "#fee" ).html( fee.toFixed(2));
   					$( "#estpct" ).html( estpct.toFixed(2));
+       				}
+       				if ($( "#assettype" ).html() == "Gold"){
+       					var fee = fee + (amount * (0.024-0.0045)); //2.4% fee for gold
+       					var estpct = estpct + (2.4-0.45);
+       					$( "#fee" ).html( fee.toFixed(2));
+  					$( "#estpct" ).html( estpct.toFixed(2));		
+       				}
        			} else {
        			$( "#fee" ).html( "---");
        			$( "#estpct" ).html("");

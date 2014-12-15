@@ -1,23 +1,32 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=0.8, minimum-scale=0.8, maximum-scale=0.8, minimal-ui" />
-<title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=0.8, minimum-scale=0.8, maximum-scale=0.8, minimal-ui" />
+	<title>
 	BitDeposit
-</title>
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
-<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-<script>
-
-	$(document).ready(function () {
-
-    var tid = setInterval(pcttimer, 5000);
-  
-  	function pcttimer() {
+	</title>
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 	
+	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	
+
+	
+	<script>
+	
+	
+	$(document).ready(function () {
+	
+		
+ 
+
+		
+		var tid = setInterval(pcttimer, 5000);
+		
+		function pcttimer() {
+			
  			$.getJSON( "pct.php", function( data ) {
  				
   				var cbusd = parseFloat(data.buy);
@@ -26,78 +35,131 @@
   				var brusd = parseFloat(data.sell);
   				$( "#brusd" ).html( brusd );
   				
+  				var brcny = parseFloat(data.cny);
+  				$( "#brcny" ).html( brcny );
+  				$( "#brcny_form" ).val( brcny );
+  				
+  				var breur = parseFloat(data.eur);
+  				$( "#breur" ).html( breur );
+  				$( "#breur_form" ).val( breur );
+  				
+  				var brgold = parseFloat(data.gold);
+  				$( "#brgold" ).html( brgold );
+  				$( "#brgold_form" ).val( brgold );
+  				
   				var amount = $( "#amountbox" ).val();
   				var amount = parseFloat(amount);
   								
-          var cbbtc = amount / parseFloat(cbusd);
+       			var cbbtc = amount / parseFloat(cbusd);
   				
-       		if (isNaN(amount) == false && $("#amountbox").filter(function() { return $(this).val(); }).length > 0){
-  				
+       			if (isNaN(amount) == false && $("#amountbox").filter(function() { return $(this).val(); }).length > 0){
   					var fee = (amount - (cbbtc*brusd))+0.15;  
   					
   					$( "#fee" ).html( fee.toFixed(2));
   					
   					var estpct = ((amount / (amount-fee))-1)*100;
   					$( "#estpct" ).html( estpct.toFixed(2));
-       		
-       		} else {
-       				
-       			$( "#fee" ).html( "---");
-       			$( "#estpct" ).html("");
-       		
-       		}
+       			} else {
+       				$( "#fee" ).html( "---");
+       					$( "#estpct" ).html("");
+       			}
+       			
+
+				
+				
+				
+				//if ($('#working').is(':visible')) {
 					
 					$( "#working" ).css( "display", "none" );
 					$( "#container" ).css( "display", "block" );					
 					
+				//} 
+				
+				
 			});	
 				
+				
+			
 		}
 		
-    pcttimer();
+		
+		
+        		
+		pcttimer();
 		
 		$( "#fee" ).html( "---");	
 		
-    $('#amountbox').keyup(function () { 
+       $('#amountbox').keyup(function () { 
        		 	
-      var maxamount = $( "#max_deposit_amount" ).html();
-      var maxamount = parseFloat(maxamount);
+       		 	var maxamount = $( "#max_deposit_amount" ).html();
+    			var maxamount = parseFloat(maxamount);
        		 	
-      var cbusd = $( "#cbusd" ).html();
-	
-  		var brusd = $( "#brusd" ).html();  				  				  				
-      var brusd = parseFloat(brusd);
-  		$('input[name=brusd]').val(brusd);
+       		 	var cbusd = $( "#cbusd" ).html();
   				
-  		var amount = parseFloat($( "#amountbox" ).val());
-  		var amount = parseFloat(amount);
   				
-  		var cbbtc = amount / parseFloat(cbusd);
+  				var brusd = $( "#brusd" ).html();  				  				  				
+  				var brusd = parseFloat(brusd);
+  				$('input[name=brusd]').val(brusd);
   				
-      if (isNaN(amount) == false && $("#amountbox").filter(function() { return $(this).val(); }).length > 0){
+  				var amount = parseFloat($( "#amountbox" ).val());
+  				var amount = parseFloat(amount);
+  				
+  				var cbbtc = amount / parseFloat(cbusd);
+  				
+       			if (isNaN(amount) == false && $("#amountbox").filter(function() { return $(this).val(); }).length > 0){
   				 			
-  			var fee = (amount - (cbbtc*brusd))+0.15;  	
+  				var fee = (amount - (cbbtc*brusd))+0.15;  	
   				
-  			$( "#fee" ).html( fee.toFixed(2));
-  			var estpct = ((amount / (amount-fee))-1)*100;
-  			$( "#estpct" ).html( estpct.toFixed(2));
-  					
-      } else {
-       		
-       	$( "#fee" ).html( "---");
-       	$( "#estpct" ).html("");
+  				$( "#fee" ).html( fee.toFixed(2));
+  					var estpct = ((amount / (amount-fee))-1)*100;
+  					$( "#estpct" ).html( estpct.toFixed(2));
+       			} else {
+       			$( "#fee" ).html( "---");
+       			$( "#estpct" ).html("");
+       			}
        			
-      }
+       			if (amount > maxamount) {
+       				$( "#toomuch" ).html( "<span style='color: #C94949;'>Transfer amount exceeds Max Deposit.</span>");
+       				$('button[type=submit]').prop('disabled', true);
+       			} else {
+       				
+       				$("button[type=submit]").removeAttr("disabled");
+					
+					
+					
+       				if( $( "#assettype" ).html() != "USD" && isNaN(amount) == false && $("#amountbox").filter(function() { return $(this).val(); }).length > 0) {
+       					
+       					if ($( "#assettype" ).html() == "CNY"){
+       						var assetconv = $( "#brcny" ).html();
+       						var assetconv = parseFloat(assetconv);
+       						var assetamount = (amount / assetconv).toFixed(2);
+       						$( "#toomuch" ).html(assetamount + " CNY");
+       					}
+       					if ($( "#assettype" ).html() == "EUR"){
+	       					var assetconv = $( "#breur" ).html();
+       						var assetconv = parseFloat(assetconv);
+       						var assetamount = (amount / assetconv).toFixed(2);
+       						$( "#toomuch" ).html(assetamount + " EUR");
+       					}
+       					if ($( "#assettype" ).html() == "Gold"){
+	       					var assetconv = $( "#brgold" ).html();
+       						var assetconv = parseFloat(assetconv);
+       						var assetamount = (amount / assetconv).toFixed(4);
+       						$( "#toomuch" ).html(assetamount + " oz of gold");
+       					}
        			
-      if (amount > maxamount) {
-      	$( "#toomuch" ).html( "<span style='color: #C94949;'>Transfer amount exceeds Max Deposit.</span>");
-       	$('button[type=submit]').prop('disabled', true);
-      } else {
-       	$( "#toomuch" ).html( "");
-       	$("button[type=submit]").removeAttr("disabled");
-      }
-       		
-    });
+       			
+       			
+       				//	$( "#toomuch" ).html("~ XXX " + $( "#assettype" ).html());
+       					
+       				} else {
+       					$( "#toomuch" ).html( "");
+       				}
+       					
+       			}
+       			
+   
+       });
        
     $('#transferform').submit(function() { // catch the form's submit event
     	
@@ -115,6 +177,8 @@
 
     		if (usdtotalamount < maxamount) {	
   			
+  			
+  			
     			$.ajax({ // create an AJAX call...
         			data: $(this).serialize(), // get the form data
         			type: $(this).attr('method'), // GET or POST
@@ -122,36 +186,54 @@
         			success: function(response) { // on success..
             			$('#statusbox').html(response + "<div style='margin-top: 50px;'><a href='https://bitreserve.org/login' class='btn btn-warning' role='button'>Login to Bitreserve</a></h4></div>"); // update the DIV
             			$( "#pagereset" ).css( "display", "block" );
+            			$('.assetdrop').prop('disabled', true);
             		}
+            		
     			});
 		
-  		} 
-		
+  			} 
+  			
+  			
+  			
     	} 
     		   			
     	return false; // cancel original event to prevent form submitting
     
-	  });
+	});
 
+	$(".dropdown-menu li a").click(function(){
 
+      $(".assetdrop:first-child").text($(this).text());
+      $(".assetdrop:first-child").val($(this).text());
+      
+      $("#assettype_form").val($(this).text());
+      
+      $("#assettype").text($(".assetdrop:first-child").text());
+      
+      $('#amountbox').keyup();
 
-  });
+   });
+
+   });
 	
 	  
 		
-	$( window ).load(function() {
-		$.getJSON( "getmax.php", function( datamax ) {
+		$( window ).load(function() {
+		$.getJSON( "getmax_demo.php", function( datamax ) {
        				
-    		var max_deposit = parseFloat(datamax.max);
+    			var max_deposit = parseFloat(datamax.max);
 				$( "#max_deposit" ).html( "Max Deposit: $");
 				$( "#max_deposit_amount" ).html(  max_deposit.toFixed(2) );
 				
-				$("button[type=submit]").removeAttr("disabled");
+				//You can only deposit up to the USD value of your Coinbase account
 				
+				$("button[type=submit]").removeAttr("disabled");
 		});	
-	});	
+		});	
 	
-</script>
+
+	
+	</script>
 </head>
 <style>
 	#container {
@@ -166,40 +248,95 @@
 	#working {
 		display: block;
 		margin: 100px auto 50px auto;
+		
 	}
+
+		
 </style>	
 <body>
-<div id="working" align="center"><i class='fa fa-spinner fa-spin fa-3x'></i></div>
-<div id="container">
-	<h1 style="font-size: 48px;">BitDeposit</h1>
-	<p style="font-weight: bold;">Transfer USD from your bank account to Bitreserve bitUSD (via Coinbase)</p>
-	
-	<div id="forminfo" style="padding-top: 30px;">
-		<div id="feebox">
-		  <h3 style="display: none;">CB Buy: $<span id="cbusd"></span></h3>
-		  <h3 style="display: none;">BR Sell: $<span id="brusd"></span></h3>
-		  <h3><span id="max_deposit">Getting maximum deposit amount...</span><span id="max_deposit_amount"></span></h3>
-		  <p>You can only deposit up to the USD value of your Coinbase account</p>
+		<div id="working" align="center">
+			
+			<i class='fa fa-spinner fa-spin fa-3x'></i>
 		</div>
-    <div style="width:360px; margin: auto;">
-      <form class="form" role="form" method="post" action="cbsync.php" id="transferform">
-        <div id="toomuch" style="height: 20px;"></div>
-        <div class="form-group">
-          <div class="input-group">
-            <input name="usdamt" class="form-control" id="amountbox" placeholder="Enter amount to transfer" style="text-align: center;">
-            <div class="input-group-addon">Est. Fee: $<span id="fee"></span> (<span id="estpct"></span>%)</div>
-          </div>
-        </div>
-        <p class="small" style="font-style: italic; padding-bottom: 20px;">(Withdrawal amount may vary slightly from amount requested due to fluctuations in exchange rate)</p>
-        <div class="form-group">
-          <label for="inputPassword" class="sr-only">Password</label>
-          <input type="password" class="form-control" id="inputPassword" name="pin" placeholder="Enter Password" style="text-align: center;">
-        </div>
-        <div style="padding-top: 30px;"><button id="transferbutton" type="submit" class="btn btn-primary" disabled>Transfer USD</button></div>
-        <input type="hidden" id="brusdhide" name="brusd" value="0" />
-      </form>
+	<div id="container">
+		
+		
+		<h1 style="font-size: 48px;">BitDeposit</h1>
+		
+		<span id="assettype" style="display: none;">USD</span>
+		
+		<div style="font-weight: bold; margin: 20px 0 20px 0;">Transfer USD from your bank account to Bitreserve <div class="btn-group" role="group">
+    <button type="button" class="btn btn-default dropdown-toggle assetdrop" data-toggle="dropdown" aria-expanded="false" style="margin: 0 5px 0 5px;">
+      USD
+    </button>
+    <ul class="dropdown-menu" role="menu">
+      <li><a href="#">USD</a></li>
+      <li><a href="#">EUR</a></li>
+      <li><a href="#">CNY</a></li>
+      <li><a href="#">Gold</a></li>
+    </ul>
+  </div>
+(via Coinbase)
+</div>
+		<p>DEMO - <a href="https://github.com/loon3/BitDeposit" style="text-decoration: none;">View Source <i class="fa fa-github fa-lg"></i></a></p>
+		
+	<div id="forminfo" style="padding-top: 10px;">
+		<div id="feebox">
+		<div style="display: none;">
+			<span id="cbusd"></span>
+			<span id="brusd"></span>
+			<span id="brcny"></span>
+			<span id="breur"></span>
+			<span id="brgold"></span>
+		
+		</div>
+		
+		
+		<h3><span id="max_deposit">Getting maximum deposit amount...</span><span id="max_deposit_amount"></span></h3>
+		<p>You can only deposit up to the USD value of your Coinbase account</p>
+		
+		
+		</div>
+<div style="width:360px; margin: -5px auto;">
+<form class="form" role="form" method="post" action="cbsync_demo.php" id="transferform">
+<div style="height: 30px;"><span id="toomuch"></span></div>
+  <div class="form-group">
+    <div class="input-group">
+      <div class="input-group-addon">$</div>
+      <input name="usdamt" class="form-control" id="amountbox" placeholder="Enter amount to transfer" style="text-align: center;">
+      <div class="input-group-addon">Est. Fee: $<span id="fee"></span> (<span id="estpct"></span>%)</div>
     </div>
   </div>
+  <p class="small" style="font-style: italic; padding-bottom: 20px;">(Withdrawal amount may vary slightly from amount requested due to fluctuations in exchange rate)</p>
+  <div class="form-group">
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" class="form-control" id="inputPassword" name="pin" placeholder="Enter Password" style="text-align: center;">
+  </div>
+  <div style="padding-top: 30px;"><button id="transferbutton" type="submit" class="btn btn-success" disabled>Transfer USD</button></div>
+
+<input type="hidden" id="brusdhide" name="brusd" value="0" />
+
+<input type="hidden" id="brcny_form" name="brcny" value="0" />
+<input type="hidden" id="breur_form" name="breur" value="0" />
+<input type="hidden" id="brgold_form" name="brgold" value="0" />
+
+<input type="hidden" id="assettype_form" name="assettype" value="0" />
+
+</form>
+</div>
+</div>
+
+<div id="statusbox" style="margin-top: 50px;"></div>
+<div id="pagereset" style="margin-top: 20px; margin-bottom: 100px; display: none;"><a href="." class="btn btn-primary" role="button">Perform another transfer</a></div>
+
+</div>
+
+</body>
+
+</html>
+
+
+
 
   <div id="statusbox" style="margin-top: 50px;"></div>
   <div id="pagereset" style="margin-top: 20px; margin-bottom: 100px; display: none;"><a href="." class="btn btn-primary" role="button">Perform another transfer</a></div>
